@@ -23,20 +23,21 @@ import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
+// import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
 import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 
 // Data
-import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
-import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
+// import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
+// import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
+import reportsLineChartDataSirTexAdmin from "layouts/dashboard/data/reportsLineChartDataSirTexAdmin";
 
 // Dashboard components
 // import Projects from "layouts/dashboard/components/Projects";
 // import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 
 function Dashboard() {
-  const { sales, tasks } = reportsLineChartData;
+  const { pesoPorMes, puntosPorMes, usuariosNuevosPorMes } = reportsLineChartDataSirTexAdmin;
 
   return (
     <DashboardLayout>
@@ -110,24 +111,18 @@ function Dashboard() {
                 <ReportsLineChart
                   color="success"
                   title="Peso recolectado por Mes"
-                  description={
-                    <>
-                      (<strong>+15%</strong>) increase in today sales.
-                    </>
-                  }
-                  date="updated 4 min ago"
-                  chart={sales}
+                  date="Ultima Actualización hoy"
+                  chart={pesoPorMes}
                 />
               </MDBox>
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
               <MDBox mb={3}>
-                <ReportsBarChart
+                <ReportsLineChart
                   color="info"
                   title="Puntos dados en el Mes"
-                  description="Last Campaign Performance"
-                  date="campaign sent 2 days ago"
-                  chart={reportsBarChartData}
+                  date="Ultima Actualización hoy"
+                  chart={puntosPorMes}
                 />
               </MDBox>
             </Grid>
@@ -136,9 +131,8 @@ function Dashboard() {
                 <ReportsLineChart
                   color="dark"
                   title="N° de usuarios nuevos"
-                  description="Last Campaign Performance"
-                  date="just updated"
-                  chart={tasks}
+                  date="Ultima Actualización hoy"
+                  chart={usuariosNuevosPorMes}
                 />
               </MDBox>
             </Grid>
