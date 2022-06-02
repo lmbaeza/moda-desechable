@@ -37,10 +37,10 @@ Coded by www.creative-tim.com
 
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
+// import Tables from "layouts/tables";
 import Billing from "layouts/billing";
-import Notifications from "layouts/notifications";
-import Profile from "layouts/profile";
+// import Notifications from "layouts/notifications";
+// import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 
@@ -56,14 +56,14 @@ const routes = [
     route: "/dashboard",
     component: <Billing />,
   },
-  {
+  /* {
     type: "collapse",
     name: "Profile",
     key: "profile",
     icon: <Icon fontSize="small">person</Icon>,
     route: "/profile",
     component: <Profile />,
-  },
+  }, */
   {
     type: "collapse",
     name: "Sign In",
@@ -88,6 +88,7 @@ const routes = [
     route: "/dashboard-admin",
     component: <Dashboard />,
   },
+  /*
   {
     type: "collapse",
     name: "Tables",
@@ -104,6 +105,7 @@ const routes = [
     route: "/notifications",
     component: <Notifications />,
   },
+  */
 ];
 
 export default routes;
