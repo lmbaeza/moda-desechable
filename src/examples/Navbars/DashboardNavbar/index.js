@@ -17,7 +17,7 @@ import { useState, useEffect } from "react";
 
 // react-router components
 // import { useLocation, Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -60,6 +60,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Setting the navbar type
@@ -110,6 +111,12 @@ function DashboardNavbar({ absolute, light, isMini }) {
       <NotificationItem icon={<Icon>shopping_cart</Icon>} title="Payment successfully completed" />
     </Menu>
   ); */
+
+  const LogOut = () => {
+    localStorage.removeItem("user");
+    navigate("/");
+  };
+
   const renderLogOut = () => (
     <Menu
       anchorEl={openMenu}
@@ -122,7 +129,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
       onClose={handleCloseMenu}
       sx={{ mt: 2 }}
     >
-      <NotificationItem icon={<Icon>logout</Icon>} title="LogOut" />
+      <NotificationItem icon={<Icon>logout</Icon>} title="LogOut" onClick={LogOut} />
     </Menu>
   );
   // Styles for the navbar icons
