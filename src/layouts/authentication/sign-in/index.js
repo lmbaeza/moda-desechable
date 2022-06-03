@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { useState } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -38,18 +38,36 @@ import MDButton from "components/MDButton";
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 
+import axios from "axios";
+import sha256 from "js-sha256";
+
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+// import { Password } from "@mui/icons-material";
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
 
-  const [email, setEmail] = useState();
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
-  const changeEmail = (e) => {
-    setEmail(e.target.value);
+  const changeUsername = (e) => {
+    setUsername(e.target.value);
+  };
+  const changePassword = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const getUser = async () => {
+    const { data } = await axios.get(`http://localhost:3000/user/${username}`);
+    const passwordSha256 = await sha256(password).toString();
+    if (data.password === passwordSha256) {
+      localStorage.setItem("user", JSON.stringify(data));
+      navigate("/dashboard");
+    }
   };
 
   return (
@@ -67,7 +85,7 @@ function Basic() {
           textAlign="center"
         >
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-            Sign in {email}
+            Sign in {username}
           </MDTypography>
           <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
             <Grid item xs={2}>
@@ -90,10 +108,10 @@ function Basic() {
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
             <MDBox mb={2}>
-              <MDInput type="email" label="Email" fullWidth onChange={changeEmail} />
+              <MDInput type="text" label="Username" fullWidth onChange={changeUsername} />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" label="Password" fullWidth />
+              <MDInput type="password" label="Password" fullWidth onChange={changePassword} />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -108,7 +126,7 @@ function Basic() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
+              <MDButton variant="gradient" color="info" fullWidth onClick={getUser}>
                 sign in
               </MDButton>
             </MDBox>

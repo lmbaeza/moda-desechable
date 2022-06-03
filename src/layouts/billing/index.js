@@ -35,8 +35,15 @@ import BillingInformation from "layouts/billing/components/BillingInformation";
 import Transactions from "layouts/billing/components/Transactions";
 import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 
+import { Navigate } from "react-router-dom";
+
 function Billing() {
   const { sirtex, pointsSpent } = reportsLineChartData;
+  const user = localStorage.getItem("user");
+  console.log(user);
+  if (user === null) {
+    return <Navigate replace to="/authentication/sign-in" />;
+  }
   return (
     <DashboardLayout>
       <DashboardNavbar />
