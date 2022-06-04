@@ -45,6 +45,8 @@ import sha256 from "js-sha256";
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 // import { Password } from "@mui/icons-material";
 
+import { HOST_BACKEND } from "../../../config";
+
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
@@ -74,7 +76,9 @@ function Basic() {
   };
 
   const getUser = async () => {
-    const { data } = await axios.get(`http://localhost:3000/user/${username}`);
+    console.log(HOST_BACKEND);
+    console.log(process.env.HOST_BACKEND);
+    const { data } = await axios.get(`${HOST_BACKEND}/user/${username}`);
     const passwordSha256 = await sha256(password).toString();
     if (data.password === passwordSha256) {
       localStorage.setItem("user", JSON.stringify(data));
