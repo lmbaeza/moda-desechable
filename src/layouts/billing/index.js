@@ -75,7 +75,7 @@ function Billing() {
                 <Grid item xs={12} md={6} xl={6}>
                   <MDBox mb={3}>
                     <ComplexStatisticsCard
-                      icon="radio_button_checked"
+                      icon="style"
                       title="Incentivos"
                       count="+ 55"
                       percentage={{
