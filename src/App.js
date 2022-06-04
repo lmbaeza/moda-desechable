@@ -146,6 +146,20 @@ export default function App() {
     </MDBox>
   );
 
+  const user = localStorage.getItem("user");
+  let defaultRouter = <Route path="*" element={<Navigate to="/authentication/sign-in" />} />;
+
+  if (user !== null) {
+    const userJson = JSON.parse(user);
+    const isUser = userJson.role === "USER";
+    const isAdmin = userJson.role === "ADMIN";
+    if (isUser) {
+      defaultRouter = <Route path="*" element={<Navigate to="/dashboard" />} />;
+    } else if (isAdmin) {
+      defaultRouter = <Route path="*" element={<Navigate to="/dashboard-admin" />} />;
+    }
+  }
+
   return direction === "rtl" ? (
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={darkMode ? themeDarkRTL : themeRTL}>
@@ -167,7 +181,7 @@ export default function App() {
         {layout === "vr" && <Configurator />}
         <Routes>
           {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/dashboard" />} />
+          {defaultRouter}
         </Routes>
       </ThemeProvider>
     </CacheProvider>
@@ -191,7 +205,7 @@ export default function App() {
       {layout === "vr" && <Configurator />}
       <Routes>
         {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+        {defaultRouter}
       </Routes>
     </ThemeProvider>
   );

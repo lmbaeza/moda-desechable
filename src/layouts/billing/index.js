@@ -44,6 +44,10 @@ function Billing() {
   if (user === null) {
     return <Navigate replace to="/authentication/sign-in" />;
   }
+  const userJson = JSON.parse(user);
+  if (userJson.role === "ADMIN") {
+    return <Navigate replace to="/dashboard-admin" />;
+  }
   return (
     <DashboardLayout>
       <DashboardNavbar />

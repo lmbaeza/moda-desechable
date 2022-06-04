@@ -47,7 +47,93 @@ import SignUp from "layouts/authentication/sign-up";
 // @mui icons
 import Icon from "@mui/material/Icon";
 
-const routes = [
+let routesAux = [];
+
+const user = localStorage.getItem("user");
+if (user === null) {
+  routesAux = [
+    {
+      type: "collapse",
+      name: "Sign In",
+      key: "sign-in",
+      icon: <Icon fontSize="small">login</Icon>,
+      route: "/authentication/sign-in",
+      component: <SignIn />,
+    },
+    {
+      type: "collapse",
+      name: "Sign Up",
+      key: "sign-up",
+      icon: <Icon fontSize="small">assignment</Icon>,
+      route: "/authentication/sign-up",
+      component: <SignUp />,
+    },
+  ];
+} else {
+  const userJson = JSON.parse(user);
+  if (userJson.role === "USER") {
+    routesAux = [
+      {
+        type: "collapse",
+        name: "Dashboard",
+        key: "dashboard",
+        icon: <Icon fontSize="small">receipt_long</Icon>,
+        route: "/dashboard",
+        component: <Billing />,
+      },
+      {
+        type: "collapse",
+        name: "Sign In",
+        key: "sign-in",
+        icon: <Icon fontSize="small">login</Icon>,
+        route: "/authentication/sign-in",
+        component: <SignIn />,
+      },
+      {
+        type: "collapse",
+        name: "Sign Up",
+        key: "sign-up",
+        icon: <Icon fontSize="small">assignment</Icon>,
+        route: "/authentication/sign-up",
+        component: <SignUp />,
+      },
+    ];
+  } else if (userJson.role === "ADMIN") {
+    routesAux = [
+      {
+        type: "collapse",
+        name: "Dashboard Admin",
+        key: "dashboard-admin",
+        icon: <Icon fontSize="small">dashboard</Icon>,
+        route: "/dashboard-admin",
+        component: <Dashboard />,
+      },
+      {
+        type: "collapse",
+        name: "Sign In",
+        key: "sign-in",
+        icon: <Icon fontSize="small">login</Icon>,
+        route: "/authentication/sign-in",
+        component: <SignIn />,
+      },
+      {
+        type: "collapse",
+        name: "Sign Up",
+        key: "sign-up",
+        icon: <Icon fontSize="small">assignment</Icon>,
+        route: "/authentication/sign-up",
+        component: <SignUp />,
+      },
+    ];
+  }
+}
+
+const routes = routesAux;
+
+export default routes;
+
+/*
+[
   {
     type: "collapse",
     name: "Dashboard",
@@ -56,14 +142,14 @@ const routes = [
     route: "/dashboard",
     component: <Billing />,
   },
-  /* {
+  {
     type: "collapse",
     name: "Profile",
     key: "profile",
     icon: <Icon fontSize="small">person</Icon>,
     route: "/profile",
     component: <Profile />,
-  }, */
+  },
   {
     type: "collapse",
     name: "Sign In",
@@ -88,7 +174,6 @@ const routes = [
     route: "/dashboard-admin",
     component: <Dashboard />,
   },
-  /*
   {
     type: "collapse",
     name: "Tables",
@@ -105,7 +190,5 @@ const routes = [
     route: "/notifications",
     component: <Notifications />,
   },
-  */
 ];
-
-export default routes;
+*/

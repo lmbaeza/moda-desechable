@@ -35,9 +35,21 @@ import reportsLineChartDataSirTexAdmin from "layouts/dashboard/data/reportsLineC
 // Dashboard components
 // import Projects from "layouts/dashboard/components/Projects";
 // import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
+import { Navigate } from "react-router-dom";
 
 function Dashboard() {
   const { pesoPorMes, puntosPorMes, usuariosNuevosPorMes } = reportsLineChartDataSirTexAdmin;
+
+  const user = localStorage.getItem("user");
+  if (user === null) {
+    console.log(null);
+    return <Navigate replace to="/authentication/sign-in" />;
+  }
+  const userJson = JSON.parse(user);
+  if (userJson.role === "USER") {
+    console.log("USER");
+    return <Navigate replace to="/dashboard" />;
+  }
 
   return (
     <DashboardLayout>

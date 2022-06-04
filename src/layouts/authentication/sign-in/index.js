@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { useState } from "react";
 
 // react-router-dom components
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -49,6 +49,18 @@ function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
+  const user = localStorage.getItem("user");
+  if (user !== null) {
+    const userJson = JSON.parse(user);
+    if (userJson.role === "USER") {
+      return <Navigate replace to="/dashboard" />;
+    }
+    if (userJson.role === "ADMIN") {
+      return <Navigate replace to="/dashboard-admin" />;
+    }
+    return <Navigate replace to="/dashboard" />;
+  }
+
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
@@ -66,7 +78,20 @@ function Basic() {
     const passwordSha256 = await sha256(password).toString();
     if (data.password === passwordSha256) {
       localStorage.setItem("user", JSON.stringify(data));
-      navigate("/dashboard");
+      console.log(data);
+      if (data.role === "USER") {
+        console.log("USER");
+        navigate("/dashboard");
+      } else if (data.role === "ADMIN") {
+        console.log("ADMIN");
+        navigate("/dashboard-admin");
+      }
+    }
+  };
+
+  const handleKeyPress = async (e) => {
+    if (e.key === "Enter") {
+      await getUser();
     }
   };
 
@@ -108,10 +133,22 @@ function Basic() {
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
             <MDBox mb={2}>
-              <MDInput type="text" label="Username" fullWidth onChange={changeUsername} />
+              <MDInput
+                type="text"
+                label="Username"
+                fullWidth
+                onChange={changeUsername}
+                onKeyPress={handleKeyPress}
+              />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" label="Password" fullWidth onChange={changePassword} />
+              <MDInput
+                type="password"
+                label="Password"
+                fullWidth
+                onChange={changePassword}
+                onKeyPress={handleKeyPress}
+              />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Switch checked={rememberMe} onChange={handleSetRememberMe} />

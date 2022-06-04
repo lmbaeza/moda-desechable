@@ -39,6 +39,18 @@ function Cover() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
+  const user = localStorage.getItem("user");
+  if (user !== null) {
+    const userJson = JSON.parse(user);
+    if (userJson.role === "USER") {
+      return <Navigate replace to="/dashboard" />;
+    }
+    if (userJson.role === "ADMIN") {
+      return <Navigate replace to="/dashboard-admin" />;
+    }
+    return <Navigate replace to="/dashboard" />;
+  }
+
   const changeName = (e) => {
     setName(e.target.value);
   };
@@ -56,11 +68,6 @@ function Cover() {
     console.log(email);
     console.log(password);
   };
-
-  if (name === "admin") {
-    // Redirect
-    return <Navigate to="/dashboard" replace />;
-  }
 
   return (
     <CoverLayout image={bgImage}>
