@@ -48,6 +48,17 @@ function Billing() {
   if (userJson.role === "ADMIN") {
     return <Navigate replace to="/dashboard-admin" />;
   }
+
+  let incentivesPos = 0;
+  let pesoTotal = 0;
+
+  for (let i = 0; i < userJson.incentive.length; i += 1) {
+    if (!userJson.incentive[i].redeemed) {
+      incentivesPos += userJson.incentive[i].point;
+    }
+    pesoTotal += userJson.incentive[i].weight;
+  }
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -77,7 +88,7 @@ function Billing() {
                     <ComplexStatisticsCard
                       icon="style"
                       title="Incentivos"
-                      count="+ 55"
+                      count={`+ ${incentivesPos}`}
                       percentage={{
                         color: "success",
                         amount: "+3%",
@@ -90,7 +101,7 @@ function Billing() {
                       color="success"
                       icon="leaderboard"
                       title="Total peso de textiles dados"
-                      count="700 Gr"
+                      count={`${pesoTotal} Gr`}
                       percentage={{
                         color: "success",
                         amount: "+7%",

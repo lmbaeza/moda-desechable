@@ -16,11 +16,11 @@ Coded by www.creative-tim.com
 import { useState } from "react";
 
 // react-router-dom components
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { Link /* , useNavigate */, Navigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
-import Switch from "@mui/material/Switch";
+// import Switch from "@mui/material/Switch";
 import Grid from "@mui/material/Grid";
 import MuiLink from "@mui/material/Link";
 
@@ -48,8 +48,8 @@ import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 import { HOST_BACKEND } from "../../../config";
 
 function Basic() {
-  const [rememberMe, setRememberMe] = useState(false);
-  const navigate = useNavigate();
+  // const [rememberMe, setRememberMe] = useState(false);
+  // const navigate = useNavigate();
 
   const user = localStorage.getItem("user");
   if (user !== null) {
@@ -66,7 +66,7 @@ function Basic() {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
-  const handleSetRememberMe = () => setRememberMe(!rememberMe);
+  // const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
   const changeUsername = (e) => {
     setUsername(e.target.value);
@@ -76,20 +76,10 @@ function Basic() {
   };
 
   const getUser = async () => {
-    console.log(HOST_BACKEND);
-    console.log(process.env.HOST_BACKEND);
     const { data } = await axios.get(`${HOST_BACKEND}/user/${username}`);
     const passwordSha256 = await sha256(password).toString();
     if (data.password === passwordSha256) {
       localStorage.setItem("user", JSON.stringify(data));
-      console.log(data);
-      if (data.role === "USER") {
-        console.log("USER");
-        navigate("/dashboard");
-      } else if (data.role === "ADMIN") {
-        console.log("ADMIN");
-        navigate("/dashboard-admin");
-      }
     }
   };
 
@@ -154,7 +144,7 @@ function Basic() {
                 onKeyPress={handleKeyPress}
               />
             </MDBox>
-            <MDBox display="flex" alignItems="center" ml={-1}>
+            {/* <MDBox display="flex" alignItems="center" ml={-1}>
               <Switch checked={rememberMe} onChange={handleSetRememberMe} />
               <MDTypography
                 variant="button"
@@ -165,7 +155,7 @@ function Basic() {
               >
                 &nbsp;&nbsp;Remember me
               </MDTypography>
-            </MDBox>
+            </MDBox> */}
             <MDBox mt={4} mb={1}>
               <MDButton variant="gradient" color="info" fullWidth onClick={getUser}>
                 sign in

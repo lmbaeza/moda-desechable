@@ -16,6 +16,9 @@ Coded by www.creative-tim.com
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
+import Switch from "@mui/material/Switch";
+import { useState } from "react";
+
 // @mui material components
 // import Icon from "@mui/material/Icon";
 
@@ -27,9 +30,29 @@ import MDTypography from "components/MDTypography";
 // Material Dashboard 2 React context
 import { useMaterialUIController } from "context";
 
-function Bill({ name, peso, puntos, idContenedor, noGutter }) {
+function Bill({ name, peso, puntos, idContenedor, qr, noGutter }) {
+  const [showQR, setetShowQR] = useState(false);
   const [controller] = useMaterialUIController();
   const { darkMode } = controller;
+
+  const handleSetShowQR = () => setetShowQR(!showQR);
+
+  let QRCode;
+  if (showQR) {
+    QRCode = (
+      <MDBox
+        display="flex"
+        justifyContent="center"
+        alignItems={{ xs: "flex-start", sm: "center" }}
+        flexDirection={{ xs: "column", sm: "row" }}
+        mb={2}
+      >
+        <MDBox mb={2} lineHeight={0}>
+          <img width={128} height={128} src={qr} alt="Qr Code" />
+        </MDBox>
+      </MDBox>
+    );
+  }
 
   return (
     <MDBox
@@ -42,6 +65,7 @@ function Bill({ name, peso, puntos, idContenedor, noGutter }) {
       p={3}
       mb={noGutter ? 0 : 1}
       mt={2}
+      style={{ "margin-bottom": "0px", "padding-bottom": "0px" }}
     >
       <MDBox width="100%" display="flex" flexDirection="column">
         <MDBox
@@ -67,6 +91,18 @@ function Bill({ name, peso, puntos, idContenedor, noGutter }) {
           </MDBox>
           */}
         </MDBox>
+        <MDBox display="flex" alignItems="center" ml={-1}>
+          <Switch checked={showQR} onChange={handleSetShowQR} />
+          <MDTypography
+            variant="button"
+            fontWeight="regular"
+            color="text"
+            onClick={handleSetShowQR}
+            sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
+          >
+            &nbsp;&nbsp;Show QR
+          </MDTypography>
+        </MDBox>
         <MDBox mb={1} lineHeight={0}>
           <MDTypography variant="caption" color="text">
             Peso Total:&nbsp;&nbsp;&nbsp;
@@ -90,6 +126,7 @@ function Bill({ name, peso, puntos, idContenedor, noGutter }) {
           </MDTypography>
         </MDTypography>
       </MDBox>
+      {QRCode}
     </MDBox>
   );
 }
@@ -105,6 +142,7 @@ Bill.propTypes = {
   peso: PropTypes.string.isRequired,
   puntos: PropTypes.string.isRequired,
   idContenedor: PropTypes.string.isRequired,
+  qr: PropTypes.string.isRequired,
   noGutter: PropTypes.bool,
 };
 

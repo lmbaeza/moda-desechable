@@ -17,6 +17,7 @@ Coded by www.creative-tim.com
 import Card from "@mui/material/Card";
 // import Divider from "@mui/material/Divider";
 import Icon from "@mui/material/Icon";
+import axios from "axios";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -25,8 +26,49 @@ import MDTypography from "components/MDTypography";
 
 // Billing page components
 import Transaction from "layouts/billing/components/Transaction";
+import { Navigate } from "react-router-dom";
+import { HOST_BACKEND } from "../../../../config";
 
 function Transactions() {
+  const user = localStorage.getItem("user");
+  if (user === null) {
+    return <Navigate replace to="/authentication/sign-in" />;
+  }
+
+  const userJson = JSON.parse(user);
+
+  const getUser = async () => {
+    const { username } = userJson;
+    const HOST = `${HOST_BACKEND}/user/${username}`;
+    const { data } = await axios.get(HOST);
+    localStorage.setItem("user", JSON.stringify(data));
+  };
+
+  getUser();
+
+  const history = userJson.incentive.map((value) => {
+    if (value.redeemed) {
+      return (
+        <Transaction
+          color="error"
+          icon="expand_more"
+          name={value.company_redeemed.name}
+          description="10 Junio 2022, at 12:30 PM"
+          value={`- ${value.point} Puntos`}
+        />
+      );
+    }
+    return (
+      <Transaction
+        color="success"
+        icon="expand_more"
+        name="Contenedor UNAL 0001"
+        description="10 Junio 2022, at 12:30 PM"
+        value={`+ ${value.point} Puntos`}
+      />
+    );
+  });
+
   return (
     <Card sx={{ height: "100%" }}>
       <MDBox display="flex" justifyContent="space-between" alignItems="center" pt={3} px={2}>
@@ -58,7 +100,8 @@ function Transactions() {
           m={0}
           sx={{ listStyle: "none" }}
         >
-          <Transaction
+          {history}
+          {/* <Transaction
             color="error"
             icon="expand_more"
             name="H&M"
@@ -71,13 +114,15 @@ function Transactions() {
             name="Contenedor UNAL"
             description="27 March 2020, at 04:30 AM"
             value="+ 75 Puntos"
-          />
+          /> */}
         </MDBox>
+        {/*
         <MDBox mt={1} mb={2}>
           <MDTypography variant="caption" color="text" fontWeight="bold" textTransform="uppercase">
             Semana Pasada
           </MDTypography>
         </MDBox>
+        
         <MDBox
           component="ul"
           display="flex"
@@ -108,6 +153,7 @@ function Transactions() {
             value="+ 30 Puntos"
           />
         </MDBox>
+        */}
       </MDBox>
     </Card>
   );
