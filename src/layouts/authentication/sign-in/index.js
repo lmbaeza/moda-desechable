@@ -76,7 +76,9 @@ function Basic() {
   };
 
   const getUser = async () => {
-    const { data } = await axios.get(`${HOST_BACKEND}/user/${username}`);
+    const HOST = `${HOST_BACKEND}/user/${username}`;
+    console.log(HOST);
+    const { data } = await axios.get(HOST);
     const passwordSha256 = await sha256(password).toString();
     if (data.password === passwordSha256) {
       localStorage.setItem("user", JSON.stringify(data));
@@ -129,7 +131,7 @@ function Basic() {
             <MDBox mb={2}>
               <MDInput
                 type="text"
-                label="Username"
+                label="Nombre"
                 fullWidth
                 onChange={changeUsername}
                 onKeyPress={handleKeyPress}
@@ -138,7 +140,7 @@ function Basic() {
             <MDBox mb={2}>
               <MDInput
                 type="password"
-                label="Password"
+                label="Contraseña"
                 fullWidth
                 onChange={changePassword}
                 onKeyPress={handleKeyPress}

@@ -40,6 +40,7 @@ import { Navigate } from "react-router-dom";
 function Billing() {
   const { sirtex, pointsSpent } = reportsLineChartData;
   const user = localStorage.getItem("user");
+
   console.log(user);
   if (user === null) {
     return <Navigate replace to="/authentication/sign-in" />;

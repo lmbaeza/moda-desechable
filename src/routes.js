@@ -43,6 +43,7 @@ import Billing from "layouts/billing";
 // import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
+import RedeemIncentive from "layouts/redeemIncentive";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -96,6 +97,10 @@ if (user === null) {
         icon: <Icon fontSize="small">assignment</Icon>,
         route: "/authentication/sign-up",
         component: <SignUp />,
+      },
+      {
+        route: "/qr/:IDIncentive/",
+        component: <RedeemIncentive />,
       },
     ];
   } else if (userJson.role === "ADMIN") {
