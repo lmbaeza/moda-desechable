@@ -44,6 +44,7 @@ import Billing from "layouts/billing";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import RedeemIncentive from "layouts/redeemIncentive";
+import IncentiveCode from "layouts/incentiveCode";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -84,6 +85,14 @@ if (user === null) {
       },
       {
         type: "collapse",
+        name: "Insertar Codigo",
+        key: "IncentiveCode",
+        icon: <Icon fontSize="small">pin</Icon>,
+        route: "/incentive/code",
+        component: <IncentiveCode />,
+      },
+      {
+        type: "collapse",
         name: "Sign In",
         key: "sign-in",
         icon: <Icon fontSize="small">login</Icon>,
@@ -101,7 +110,7 @@ if (user === null) {
       {
         route: "/qr/:IDIncentive/",
         component: <RedeemIncentive />,
-      },
+      }
     ];
   } else if (userJson.role === "ADMIN") {
     routesAux = [
