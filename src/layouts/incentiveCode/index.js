@@ -22,16 +22,11 @@ import Card from "@mui/material/Card";
 // Material Dashboard 2 React example components
 // import axios from "axios";
 
-import { Link, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useState } from "react";
 
 // @mui material components
 import MuiLink from "@mui/material/Link";
-
-// @mui icons
-import FacebookIcon from "@mui/icons-material/Facebook";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import GoogleIcon from "@mui/icons-material/Google";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -41,15 +36,12 @@ import MDButton from "components/MDButton";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
-import MDAlert from "components/MDAlert";
 import MDSnackbar from "components/MDSnackbar";
 
-// Authentication layout components
-import BasicLayout from "layouts/authentication/components/BasicLayout";
+import { HOST_BACKEND } from "../../config";
+import axios from "axios";
 
-// Images
-import bgImage from "assets/images/bg-sign-in-basic.jpeg";
-// import { Password } from "@mui/icons-material";
+// Authentication layout components
 
 function IncentiveCode() {
   const [code, setCode] = useState();
@@ -68,7 +60,7 @@ function IncentiveCode() {
   if (user === null) {
     return <Navigate replace to="/authentication/sign-in" />;
   }
-  // const userJson = JSON.parse(user);
+  var userJson = JSON.parse(user);
 
   const changeCode = (e) => {
     setCode(e.target.value);
@@ -80,9 +72,9 @@ function IncentiveCode() {
     <MDSnackbar
       color="success"
       icon="check"
-      title="Material Dashboard"
-      content="Hello, world! This is a notification message"
-      dateTime="11 mins ago"
+      title="Codigo Validado"
+      content="El codigó se cargó satisfactoriamente"
+      dateTime="less than 1 min"
       open={successSB}
       onClose={closeSuccessSB}
       close={closeSuccessSB}
@@ -94,9 +86,9 @@ function IncentiveCode() {
     <MDSnackbar
       color="error"
       icon="warning"
-      title="Material Dashboard"
-      content="Hello, world! This is a notification message"
-      dateTime="11 mins ago"
+      title={`Codigo Incorrecto`}
+      content="El codigo ingresado es incorrecto o ya expiró"
+      dateTime="less than 1 min"
       open={errorSB}
       onClose={closeErrorSB}
       close={closeErrorSB}
@@ -104,8 +96,49 @@ function IncentiveCode() {
     />
   );
 
-  const validator = (event) => {
-    if(code === undefined || code.length % 2 == 0) {
+  const validator = async (event) => {
+    if(code === undefined) return;
+    const decryptCode = DEC(code);
+    const codes = decryptCode.split("-");
+    
+    const codeHash = codes[0];
+    const peso = codes[1];
+    const puntos = codes[2];
+
+    console.log(codes);
+
+    const answer = await axios.get(HOST_BACKEND + "/code/" + codeHash);
+    const { data }  = answer;
+    
+    console.log(answer);
+
+    if(answer.status !== 200 || data === null) {
+      openErrorSB();
+      return;
+    }
+
+    if(!data.used) {
+      var incentive = userJson.incentive;
+      console.log(incentive);
+      incentive.push({
+        point: puntos,
+        weight: peso
+      });
+
+      const userUpdate = { incentive };
+
+      const updateResponse = await axios.put(HOST_BACKEND + "/user/" + userJson._id, userUpdate);
+      console.log(updateResponse);
+      if(updateResponse.status !== 200 || updateResponse.data === null) {
+        openErrorSB();
+        return;
+      }
+      const updateCodeResponse = await axios.put(HOST_BACKEND + "/code/" + data._id, { used: true });
+      console.log(updateResponse);
+      if(updateCodeResponse.status !== 200 || updateCodeResponse.data === null) {
+        openErrorSB();
+        return;
+      }
       openSuccessSB();
     } else {
       openErrorSB();
@@ -153,6 +186,28 @@ function IncentiveCode() {
       </ MDBox>
     </ DashboardLayout>
   );
+}
+
+const secret = 33;
+
+function ENC(str) {
+  var encrypt = '';
+  for(let i = 0; i < str.length; i += 1) {
+    let ascii = str.charCodeAt(i);
+    ascii = ascii + secret;
+    encrypt = encrypt + String.fromCharCode(ascii);
+  }
+  return encrypt;
+}
+
+function DEC(encrypt) {
+  var decrypt = '';
+  for(let i = 0; i < encrypt.length; i += 1) {
+    let ascii = encrypt.charCodeAt(i);
+    ascii = ascii - secret;
+    decrypt = decrypt + String.fromCharCode(ascii);
+  }
+  return decrypt;
 }
 
 export default IncentiveCode;
