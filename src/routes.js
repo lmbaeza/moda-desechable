@@ -45,6 +45,7 @@ import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import RedeemIncentive from "layouts/redeemIncentive";
 import IncentiveCode from "layouts/incentiveCode";
+import ContainerMap from "layouts/map/containers";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -93,19 +94,11 @@ if (user === null) {
       },
       {
         type: "collapse",
-        name: "Sign In",
-        key: "sign-in",
-        icon: <Icon fontSize="small">login</Icon>,
-        route: "/authentication/sign-in",
-        component: <SignIn />,
-      },
-      {
-        type: "collapse",
-        name: "Sign Up",
-        key: "sign-up",
-        icon: <Icon fontSize="small">assignment</Icon>,
-        route: "/authentication/sign-up",
-        component: <SignUp />,
+        name: "Ubicación",
+        key: "ContainerMap",
+        icon: <Icon fontSize="small">fmd_good</Icon>,
+        route: "/map/container",
+        component: <ContainerMap />,
       },
       {
         route: "/qr/:IDIncentive/",

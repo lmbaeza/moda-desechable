@@ -35,11 +35,14 @@ import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import Footer from "examples/Footer";
 
 import MDSnackbar from "components/MDSnackbar";
 
 import { HOST_BACKEND } from "../../config";
 import axios from "axios";
+
+import "./IncentiveCode.css";
 
 // Authentication layout components
 
@@ -97,7 +100,8 @@ function IncentiveCode() {
   );
 
   const validator = async (event) => {
-    if(code === undefined) return;
+    if(typeof code == 'undefined' || code == null || code.length == 0) return;
+
     const decryptCode = DEC(code);
     const codes = decryptCode.split("-");
     
@@ -164,8 +168,9 @@ function IncentiveCode() {
                 textAlign="center"
               >
                 <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-                  Inserte su Codigo de Incentivo
+                  Ingrese su código de incentivo
                 </MDTypography>
+                <img src="/img/planet-earth.png" width="18%" height="18%" />
               </MDBox>
               <MDBox pt={4} pb={3} px={3}>
                 <MDBox component="form" role="form">
@@ -184,6 +189,13 @@ function IncentiveCode() {
           </ Grid>
         </ Grid>
       </ MDBox>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <Footer />
     </ DashboardLayout>
   );
 }
