@@ -53,7 +53,7 @@ function Transactions() {
           color="error"
           icon="expand_more"
           name={value.company_redeemed.name}
-          description="10 Junio 2022, at 12:30 PM"
+          description={dateToFormat(value.create_at)}
           value={`- ${value.point} Puntos`}
         />
       );
@@ -63,7 +63,7 @@ function Transactions() {
         color="success"
         icon="expand_more"
         name="Contenedor UNAL 0001"
-        description="10 Junio 2022, at 12:30 PM"
+        description={dateToFormat(value.create_at)}
         value={`+ ${value.point} Puntos`}
       />
     );
@@ -157,6 +157,14 @@ function Transactions() {
       </MDBox>
     </Card>
   );
+}
+
+
+function dateToFormat(date) {
+  var dateFromString  = new Date(date);
+  console.log(date);
+  var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  return dateFromString.toLocaleDateString("es-ES", options);
 }
 
 export default Transactions;

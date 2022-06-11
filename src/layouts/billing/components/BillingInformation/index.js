@@ -50,7 +50,7 @@ function BillingInformation() {
 
   const history = historyFilter.map((value) => (
     <Bill
-      name="15/May/2022"
+      name={dateToFormat(value.create_at)}
       peso={`${value.weight} Gr`}
       puntos={`+ ${value.point}`}
       qr={value.qr}
@@ -93,6 +93,13 @@ function BillingInformation() {
       </MDBox>
     </Card>
   );
+}
+
+function dateToFormat(date) {
+  var dateFromString  = new Date(date);
+  console.log(date);
+  var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  return dateFromString.toLocaleDateString("es-ES", options);
 }
 
 export default BillingInformation;
