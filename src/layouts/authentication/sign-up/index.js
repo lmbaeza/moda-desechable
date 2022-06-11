@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { useState } from "react";
 
 // react-router-dom components
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -34,9 +34,14 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 // Images
 import bgImage from "assets/images/bg-sign-up-cover.jpeg";
 
+import axios from "axios";
+
+import { HOST_BACKEND } from "../../../config"
+
 function Cover() {
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [username, setUserName] = useState();
   const [password, setPassword] = useState();
 
   const user = localStorage.getItem("user");
@@ -51,22 +56,57 @@ function Cover() {
     return <Navigate replace to="/dashboard" />;
   }
 
-  const changeName = (e) => {
-    setName(e.target.value);
+  let navigate = useNavigate();
+
+  const changeFirstName = (e) => {
+    setFirstName(e.target.value);
   };
 
-  const changeEmail = (e) => {
-    setEmail(e.target.value);
+  const changeLastName = (e) => {
+    setLastName(e.target.value);
+  };
+
+  const changeUserName = (e) => {
+    setUserName(e.target.value);
   };
 
   const changePassword = (e) => {
     setPassword(e.target.value);
   };
 
-  const submit = () => {
-    console.log(name);
-    console.log(email);
+  const submit = async () => {
+    console.log(firstName);
+    console.log(lastName);
+    console.log(username);
     console.log(password);
+
+    var userObj = {
+      "first_name": firstName,
+      "last_name": lastName,
+      "id_type": "CC",
+      "id": random(0, 1000000000),
+      "incentive": [{
+        "point": 10,
+        "weight": 0
+      }],
+      "username": username,
+      "password": password
+    };
+
+    console.log(userObj);
+
+    const response = await axios.post(HOST_BACKEND + "/user", userObj);
+    const { data } = response;
+
+    console.log(response);
+    console.log(data);
+
+    if(response.status !== 201 || data === null) {
+      alert("El usuario no se registró correctamente");
+      return;
+    }
+
+    navigate('/authentication/sign-in');
   };
 
   return (
@@ -84,10 +124,10 @@ function Cover() {
           textAlign="center"
         >
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-            Join us today
+            Únete a Nosotros
           </MDTypography>
           <MDTypography display="block" variant="button" color="white" my={1}>
-            Enter your email and password to register
+            Ingresa tu usuario y contraseña
           </MDTypography>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
@@ -95,19 +135,30 @@ function Cover() {
             <MDBox mb={2}>
               <MDInput
                 type="text"
-                label="Name"
+                label="Nombre"
                 variant="standard"
                 fullWidth
-                onChange={changeName}
+                onChange={changeFirstName}
               />
             </MDBox>
+
             <MDBox mb={2}>
               <MDInput
-                type="email"
-                label="Email"
+                type="text"
+                label="Apellido"
                 variant="standard"
                 fullWidth
-                onChange={changeEmail}
+                onChange={changeLastName}
+              />
+            </MDBox>
+
+            <MDBox mb={2}>
+              <MDInput
+                type="text"
+                label="Usuario"
+                variant="standard"
+                fullWidth
+                onChange={changeUserName}
               />
             </MDBox>
             <MDBox mb={2}>
@@ -142,12 +193,12 @@ function Cover() {
             </MDBox>
             <MDBox mt={4} mb={1}>
               <MDButton variant="gradient" color="info" fullWidth onClick={submit}>
-                sign in
+                Registrar usuario
               </MDButton>
             </MDBox>
             <MDBox mt={3} mb={1} textAlign="center">
               <MDTypography variant="button" color="text">
-                Already have an account?{" "}
+                ¿Ya tienes una Cuenta?{" "}
                 <MDTypography
                   component={Link}
                   to="/authentication/sign-in"
@@ -165,6 +216,10 @@ function Cover() {
       </Card>
     </CoverLayout>
   );
+}
+
+function random(min, max) {
+  return parseInt(Math.random() * (max - min) + min)
 }
 
 export default Cover;

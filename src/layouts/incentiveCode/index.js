@@ -175,7 +175,7 @@ function IncentiveCode() {
               <MDBox pt={4} pb={3} px={3}>
                 <MDBox component="form" role="form">
                   <MDBox mb={2}>
-                    <MDInput type="text" label="Codigo" fullWidth onChange={changeCode} />
+                    <MDInput id="code" type="text" label="Codigo" fullWidth onChange={changeCode} />
                   </MDBox>
                   <MDBox mt={4} mb={1}>
                     <MDButton variant="gradient" color="info" onClick={validator} fullWidth>
