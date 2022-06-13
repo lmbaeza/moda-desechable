@@ -45,6 +45,7 @@ import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import RedeemIncentive from "layouts/redeemIncentive";
 import IncentiveCode from "layouts/incentiveCode";
+import IncentiveCodeFromQR from "layouts/incentiveCode/incentiveCodeFromQR";
 import ContainerMap from "layouts/map/containers";
 
 // @mui icons
@@ -53,7 +54,10 @@ import Icon from "@mui/material/Icon";
 let routesAux = [];
 
 const user = localStorage.getItem("user");
-if (user === null) {
+
+console.log(user);
+
+if (user === null || user === 'null') {
   routesAux = [
     {
       type: "collapse",
@@ -70,9 +74,10 @@ if (user === null) {
       icon: <Icon fontSize="small">assignment</Icon>,
       route: "/authentication/sign-up",
       component: <SignUp />,
-    },
+    }
   ];
 } else {
+  console.log(user);
   const userJson = JSON.parse(user);
   if (userJson.role === "USER") {
     routesAux = [
@@ -101,8 +106,14 @@ if (user === null) {
         component: <ContainerMap />,
       },
       {
-        route: "/qr/:IDIncentive/",
+        key: "RedeemIncentive",
+        route: "/incentive/qr/:IDIncentive/",
         component: <RedeemIncentive />,
+      },
+      {
+        key: "IncentiveCodeFromQR",
+        route: "/qr/:code",
+        component: <IncentiveCodeFromQR />,
       }
     ];
   } else if (userJson.role === "ADMIN") {
