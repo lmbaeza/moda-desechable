@@ -52,6 +52,7 @@ function Basic() {
   // const navigate = useNavigate();
 
   console.log(HOST_BACKEND);
+  console.log(process.env.HOST_BACKEND);
 
   const user = localStorage.getItem("user");
   if (user !== null) {
