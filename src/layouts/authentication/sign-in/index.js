@@ -83,6 +83,7 @@ function Basic() {
     const passwordSha256 = await sha256(password).toString();
     if (data.password === passwordSha256) {
       localStorage.setItem("user", JSON.stringify(data));
+      localStorage.setItem("loggued", true);
       navigate('/dashboard');
     }
   };

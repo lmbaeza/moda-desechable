@@ -76,6 +76,7 @@ function IncentiveCodeFromQR() {
         if(was_sucessfull && !data.used) {
           var incentive = userJson.incentive;
           console.log(incentive);
+          console.log(userJson);
           incentive.push({
             point: puntos,
             weight: peso

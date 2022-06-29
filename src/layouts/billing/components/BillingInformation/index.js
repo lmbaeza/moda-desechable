@@ -34,13 +34,16 @@ function BillingInformation() {
 
   const userJson = JSON.parse(user);
   const getUser = async () => {
-    const { username } = userJson;
-    const HOST = `${HOST_BACKEND}/user/${username}`;
-    const { data } = await axios.get(HOST);
-    localStorage.setItem("user", JSON.stringify(data));
+    const loggued = localStorage.getItem("loggued");
+    if(loggued === true) {
+      const { username } = userJson;
+      const HOST = `${HOST_BACKEND}/user/${username}`;
+      const { data } = await axios.get(HOST);
+      localStorage.setItem("user", JSON.stringify(data));
+    }
   };
 
-  getUser();
+  setInterval(getUser, 2000);
 
   console.log(userJson);
 

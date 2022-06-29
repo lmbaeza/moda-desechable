@@ -114,6 +114,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
   const LogOut = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("loggued");
     navigate("/");
   };
 
