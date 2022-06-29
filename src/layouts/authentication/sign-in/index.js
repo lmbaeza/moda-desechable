@@ -51,6 +51,8 @@ function Basic() {
   // const [rememberMe, setRememberMe] = useState(false);
   // const navigate = useNavigate();
 
+  console.log(HOST_BACKEND);
+
   const user = localStorage.getItem("user");
   if (user !== null) {
     const userJson = JSON.parse(user);
